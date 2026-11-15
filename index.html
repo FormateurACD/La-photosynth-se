@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -164,10 +165,10 @@ ${dot('CO₂','#6b7280','M10,10 L45,45',2,0)}${dot('C4','#e08a00','M45,45 L88,70
 <text x="100" y="142" text-anchor="middle" font-size="9" fill="var(--mut)">Gaine de Kranz : CO₂ concentré</text>`;
 
 /* ===== 3. Simulateur ===== */
-const gauss=(T,o,w)=>Math.exp(-((T-o)/w)**2);
+const gauss=(T,o,w)=>Math.exp(-(((T-o)/w)**2));
 function sim(){
   const T=+$('#T').value,d=+$('#D').value,g=Math.max(.05,1-.95*d/100);
-  const A3=70*gauss(T,23,9)*g,A4=100*gauss(T,33,10)*g**.4;       // modèle pédagogique simplifié
+  const A3=70*gauss(T,23,9)*g,A4=100*gauss(T,33,10)*g**.4;
   $('#tV').textContent=T;$('#dV').textContent=d;
   [[3,A3],[4,A4]].forEach(([k,a])=>{$('#a'+k).textContent=Math.round(a)+' %';$('#b'+k).style.width=a+'%';
     $('#p'+k).style.transform=`scale(${.35+a/100*.8})`;$('#p'+k).style.filter=`saturate(${.3+a/100*.7}) brightness(${.8+a/500})`});
@@ -177,7 +178,7 @@ function sim(){
 
 /* ===== 4. Lumière : couches de feuilles ===== */
 function lum(){
-  const n=+$('#N').value,I=1-Math.pow(.6,n),top=40,bot=top+(n-1)*18+14;   // chaque couche capte 40 % de la lumière restante
+  const n=+$('#N').value,I=1-Math.pow(.6,n),top=40,bot=top+(n-1)*18+14;
   $('#nV').textContent=n;
   let rays=[60,130,200,270,340].map(x=>`<line class="flow" x1="${x}" y1="0" x2="${x}" y2="${top-6}" stroke="var(--sun)" stroke-width="4"/>
    <line class="flow" x1="${x}" y1="${bot}" x2="${x}" y2="192" stroke="var(--sun)" stroke-width="4" opacity="${Math.pow(.6,n)}"/>`).join('');
