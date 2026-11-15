@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Photosynthèse en images – BTS ACD</title>
+<style>
+/* ===== Thème clair / sombre ===== */
+:root{--bg:#f4f8f2;--card:#fff;--tx:#1d2b1f;--mut:#5d6b5f;--bd:#dde5da;--ac:#2e7d32;--c3:#2e7d32;--c4:#e08a00;--cam:#7b4fb3;--sun:#f5b800;--water:#2b7fd1;--sug:#e8730c;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121a14;--card:#1b261d;--tx:#e8efe6;--mut:#a3b3a5;--bd:#2c3b2f;--ac:#6fcf76;--c3:#6fcf76;--c4:#ffb340;--cam:#b794f4;--water:#5aa9ee;--sug:#ff9a4d;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121a14;--card:#1b261d;--tx:#e8efe6;--mut:#a3b3a5;--bd:#2c3b2f;--ac:#6fcf76;--c3:#6fcf76;--c4:#ffb340;--cam:#b794f4;--water:#5aa9ee;--sug:#ff9a4d;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{max-width:900px;margin:auto;padding:1.2rem 1rem .4rem}
+h1{font-size:clamp(1.4rem,4vw,1.9rem);margin:0}
+header p{margin:.2rem 0 0;color:var(--mut)}
+nav{display:flex;gap:.4rem;overflow-x:auto;max-width:900px;margin:auto;padding:.6rem 1rem;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+nav button,.btn{flex:none;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:.5rem .9rem;border-radius:99px;cursor:pointer;font:inherit;font-size:.92rem;margin:.15rem .15rem .15rem 0;transition:.2s}
+nav button.on,.btn.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+main{max-width:900px;margin:auto;padding:0 1rem 3rem}
+section{display:none}section.on{display:block;animation:in .4s}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:1rem 1.2rem;margin:.8rem 0}
+h2{font-size:1.2rem;margin:.2rem 0 .4rem}
+.grid{display:grid;gap:.8rem;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+svg{width:100%;display:block}
+.note{color:var(--mut);font-size:.9rem}
+input[type=range]{width:100%;accent-color:var(--ac);margin:.2rem 0 .8rem}
+.bar{height:16px;background:var(--bg);border:1px solid var(--bd);border-radius:9px;overflow:hidden;margin:.2rem 0 .6rem}
+.bar i{display:block;height:100%;width:0;transition:width .6s}
+.plant{font-size:5rem;text-align:center;height:6.5rem;display:flex;align-items:flex-end;justify-content:center}
+.plant span{display:inline-block;transform-origin:bottom;transition:transform .6s,filter .6s}
+.big{font-size:2rem;font-weight:700}
+/* Animations SVG */
+.spin{animation:spin 12s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+.flow{stroke-dasharray:6 8;animation:dash 1s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-14}}
+.stoma{transition:transform .8s}
+.dim{opacity:.2}svg [data-k]{transition:opacity .3s;cursor:pointer}
+.opt{display:block;width:100%;text-align:left;border-radius:12px}
+.ok{background:var(--ac)!important;color:#fff!important}.ko{background:#c62828!important;color:#fff!important}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header><h1>🌱 La photosynthèse en images</h1><p>BTS Agronomie et Cultures Durables – C3, C4, CAM, lumière et sucres</p></header>
+<nav id="nav"></nav>
+<main>
+
+<!-- 1. PRINCIPE -->
+<section data-title="1. Le principe">
+  <div class="card"><h2>Ce que fait une feuille</h2>
+    <svg viewBox="0 0 400 250" id="s1" aria-label="Schéma général de la photosynthèse"></svg>
+    <p><b>Lumière + CO₂ + eau → sucres + O₂.</b> Les sucres partent vers le reste de la plante (voir l’onglet 5).</p></div>
+  <div class="grid">
+    <div class="card"><h2>☀️ Phase claire</h2><p>Dans les thylakoïdes, la chlorophylle capte la lumière, l’eau est coupée (O₂ libéré) et la plante fabrique de l’<b>ATP</b> et du <b>NADPH</b>.</p></div>
+    <div class="card"><h2>🔄 Cycle de Calvin</h2><p>Dans le stroma, la <b>Rubisco</b> fixe le CO₂ et, grâce à l’ATP et au NADPH, fabrique des sucres.</p></div>
+  </div>
+</section>
+
+<!-- 2. C3 / C4 / CAM -->
+<section data-title="2. C3 / C4 / CAM">
+  <div class="card"><h2>Les stomates : jour ou nuit ?</h2>
+    <button class="btn on" data-d="1">☀️ Jour</button><button class="btn" data-d="0">🌙 Nuit</button>
+    <div class="grid" id="stoGrid"></div></div>
+  <div class="card"><h2>Où le CO₂ est-il fixé ? (anatomie de Kranz)</h2>
+    <div class="grid">
+      <div><svg viewBox="0 0 200 150" id="k3"></svg><p class="note"><b style="color:var(--c3)">C3</b> : la Rubisco travaille partout dans le mésophylle, avec de la photorespiration en cas de chaleur.</p></div>
+      <div><svg viewBox="0 0 200 150" id="k4"></svg><p class="note"><b style="color:var(--c4)">C4</b> : le mésophylle capte le CO₂ (PEP-carboxylase) et le <b>pompe</b> vers la gaine, où la Rubisco travaille sans photorespiration.</p></div>
+    </div></div>
+  <div class="grid">
+    <div class="card"><h2 style="color:var(--c3)">C3</h2><p>Blé, orge, colza, tournesol, soja. Optimum 15–25 °C. Profite d’un CO₂ plus élevé.</p></div>
+    <div class="card"><h2 style="color:var(--c4)">C4</h2><p>Maïs, sorgho, canne. Optimum 30–40 °C, 2 fois plus efficace avec l’eau (WUE), mais cycle estival exposé à la sécheresse.</p></div>
+    <div class="card"><h2 style="color:var(--cam)">CAM</h2><p>Ananas, agave. Stomates fermés le jour, CO₂ fixé la nuit : très économe en eau, mais croissance lente.</p></div>
+  </div>
+</section>
+
+<!-- 3. SIMULATEUR -->
+<section data-title="3. Simulateur">
+  <div class="card"><h2>Chaleur + sécheresse : qui résiste ?</h2>
+    <label>🌡️ Température : <b id="tV"></b> °C</label><input id="T" type="range" min="10" max="45" value="22">
+    <label>💧 Sécheresse : <b id="dV"></b> %</label><input id="D" type="range" min="0" max="100" value="0">
+    <div class="grid">
+      <div><h2 style="color:var(--c3)">Blé (C3)</h2><div class="plant"><span id="p3">🌾</span></div>
+        Photosynthèse <b id="a3"></b><div class="bar"><i id="b3" style="background:var(--c3)"></i></div></div>
+      <div><h2 style="color:var(--c4)">Maïs (C4)</h2><div class="plant"><span id="p4">🌽</span></div>
+        Photosynthèse <b id="a4"></b><div class="bar"><i id="b4" style="background:var(--c4)"></i></div></div>
+    </div>
+    <p id="simMsg" class="big" style="font-size:1.1rem"></p></div>
+</section>
+
+<!-- 4. LUMIÈRE -->
+<section data-title="4. Lumière et feuilles">
+  <div class="card"><h2>Combien de feuilles faut-il ?</h2>
+    <p class="note">Plus il y a de couches de feuilles (LAI), plus on capte de lumière… mais chaque couche en capte de moins en moins.</p>
+    <label>🍃 Couches de feuilles : <b id="nV"></b></label><input id="N" type="range" min="1" max="6" value="3">
+    <svg viewBox="0 0 400 220" id="s4" aria-label="Couches de feuilles et lumière"></svg>
+    <div class="big" id="cap"></div><p id="lMsg"></p></div>
+</section>
+
+<!-- 5. TRANSPORT DES SUCRES -->
+<section data-title="5. Transport des sucres">
+  <div class="card"><h2>De la feuille aux organes de réserve</h2>
+    <svg viewBox="0 0 400 300" id="s5" aria-label="Transport des sucres dans la plante"></svg>
+    <div id="zBtns"></div><p id="zTxt">Cliquez sur une partie du schéma ou sur un bouton.</p></div>
+</section>
+
+<!-- 6. QUIZ -->
+<section data-title="6. Quiz">
+  <div class="card"><div class="note" id="qN"></div><h2 id="qQ"></h2><div id="qO"></div><p id="qE"></p><button class="btn" id="qNext" style="display:none">Suivant →</button></div>
+</section>
+</main>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+/* ===== Onglets ===== */
+const secs=$$('main section');
+secs.forEach((s,i)=>{const b=document.createElement('button');b.textContent=s.dataset.title;b.onclick=()=>show(i);$('#nav').append(b)});
+function show(i){secs.forEach((s,j)=>s.classList.toggle('on',i===j));$$('#nav button').forEach((b,j)=>b.classList.toggle('on',i===j));scrollTo(0,0)}
+show(0);
+
+/* Petit utilitaire : point animé qui suit un chemin SVG */
+const dot=(txt,col,path,dur,delay=0)=>`<g><circle r="9" fill="${col}"/><text y="3.5" font-size="8" text-anchor="middle" fill="#fff" font-weight="700">${txt}</text>
+<animateMotion path="${path}" dur="${dur}s" begin="${delay}s" repeatCount="indefinite"/></g>`;
+
+/* ===== 1. Schéma général ===== */
+$('#s1').innerHTML=`
+<g class="spin"><circle cx="45" cy="45" r="20" fill="var(--sun)"/>${[0,45,90,135,180,225,270,315].map(a=>`<line x1="45" y1="12" x2="45" y2="2" stroke="var(--sun)" stroke-width="4" stroke-linecap="round" transform="rotate(${a} 45 45)"/>`).join('')}</g>
+<rect x="196" y="115" width="8" height="125" fill="#8bc34a"/><rect x="0" y="238" width="400" height="12" fill="#8d6e63"/>
+<ellipse cx="200" cy="90" rx="85" ry="30" fill="var(--c3)" opacity=".85"/>
+<text x="200" y="94" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">Feuille</text>
+${dot('☀','#f5b800','M75,50 L150,80',2,0)}${dot('☀','#f5b800','M75,40 L170,75',2,.8)}
+${dot('CO₂','#6b7280','M390,30 L260,85',3,0)}${dot('CO₂','#6b7280','M390,60 L270,92',3,1.5)}
+${dot('O₂','#2b7fd1','M230,70 L330,15',3,.7)}
+${dot('H₂O','#2b7fd1','M190,235 L190,115',3,0)}${dot('H₂O','#2b7fd1','M190,235 L190,115',3,1.5)}
+${dot('C₆','#e8730c','M210,115 L210,230',3,.5)}${dot('C₆','#e8730c','M210,115 L210,230',3,2)}
+<text x="300" y="180" fill="var(--mut)" font-size="12">sucres exportés</text>`;
+
+/* ===== 2. Stomates jour / nuit ===== */
+const PL=[
+ {n:'C3',c:'var(--c3)',day:[1,'Stomates ouverts : le CO₂ entre, mais l’eau sort beaucoup.'],night:[0,'Fermés : rien ne se passe.'],wue:25},
+ {n:'C4',c:'var(--c4)',day:[.5,'Peu ouverts suffit : le CO₂ est concentré, donc moins d’eau perdue.'],night:[0,'Fermés.'],wue:55},
+ {n:'CAM',c:'var(--cam)',day:[0,'Fermés : zéro perte d’eau, le CO₂ stocké la nuit est utilisé.'],night:[1,'Ouverts : fixation du CO₂ dans la fraîcheur (malate).'],wue:95}];
+$('#stoGrid').innerHTML=PL.map((p,i)=>`<div><h2 style="color:${p.c}">${p.n}</h2>
+<svg viewBox="0 0 200 90"><rect x="0" y="35" width="200" height="20" fill="#c8d9a8"/>
+<ellipse class="stoma" id="gl${i}" cx="88" cy="45" rx="12" ry="16" fill="${p.c}"/><ellipse class="stoma" id="gr${i}" cx="112" cy="45" rx="12" ry="16" fill="${p.c}"/>
+<g id="co${i}" opacity="0"><circle cx="100" cy="8" r="8" fill="#6b7280"/><circle cx="100" cy="8" r="8" fill="#6b7280"><animate attributeName="cy" values="0;70" dur="1.4s" repeatCount="indefinite"/></circle></g></svg>
+<p class="note" id="st${i}"></p><span class="note">Efficience en eau</span><div class="bar"><i style="background:${p.c};width:${p.wue}%"></i></div></div>`).join('');
+function setDay(d){
+  $$('[data-d]').forEach(b=>b.classList.toggle('on',+b.dataset.d===d));
+  PL.forEach((p,i)=>{const [o,t]=d?p.day:p.night,s=o*11;
+    $('#gl'+i).style.transform=`translateX(${-s+0}px)`;$('#gr'+i).style.transform=`translateX(${s}px)`;
+    $('#st'+i).textContent=t;$('#co'+i).setAttribute('opacity',o?1:0)});
+}
+$$('[data-d]').forEach(b=>b.onclick=()=>setDay(+b.dataset.d));setDay(1);
+/* Kranz : points CO2 animés */
+const cells=(cx,cy,r,n,R,col)=>Array.from({length:n},(_,i)=>{const a=i/n*6.283;return `<circle cx="${cx+Math.cos(a)*R}" cy="${cy+Math.sin(a)*R*.8}" r="${r}" fill="${col}"/>`}).join('');
+$('#k3').innerHTML=`<rect width="200" height="150" rx="10" fill="var(--bg)"/>${cells(100,75,17,8,52,'#7cc06a')}<circle cx="100" cy="75" r="16" fill="#e6e0a8"/>
+${dot('CO₂','#6b7280','M10,10 L60,50',2.5,0)}${dot('CO₂','#6b7280','M190,10 L140,50',2.5,1.2)}<text x="100" y="140" text-anchor="middle" font-size="9" fill="var(--mut)">Rubisco partout</text>`;
+$('#k4').innerHTML=`<rect width="200" height="150" rx="10" fill="var(--bg)"/>${cells(100,75,13,12,62,'#7cc06a')}<circle cx="100" cy="75" r="38" fill="#1f6f2a"/><circle cx="100" cy="75" r="16" fill="#e6e0a8"/>
+${dot('CO₂','#6b7280','M10,10 L45,45',2,0)}${dot('C4','#e08a00','M45,45 L88,70',2,1)}${dot('CO₂','#6b7280','M190,10 L155,45',2,.6)}${dot('C4','#e08a00','M155,45 L112,70',2,1.6)}
+<text x="100" y="142" text-anchor="middle" font-size="9" fill="var(--mut)">Gaine de Kranz : CO₂ concentré</text>`;
+
+/* ===== 3. Simulateur ===== */
+const gauss=(T,o,w)=>Math.exp(-Math.pow((T-o)/w,2));
+function sim(){
+  const T=+$('#T').value,d=+$('#D').value,g=Math.max(.05,1-.95*d/100);
+  const A3=70*gauss(T,23,9)*g,A4=100*gauss(T,33,10)*Math.pow(g,.4);       // modèle pédagogique simplifié
+  $('#tV').textContent=T;$('#dV').textContent=d;
+  [[3,A3],[4,A4]].forEach(([k,a])=>{$('#a'+k).textContent=Math.round(a)+' %';$('#b'+k).style.width=a+'%';
+    $('#p'+k).style.transform=`scale(${.35+a/100*.8})`;$('#p'+k).style.filter=`saturate(${.3+a/100*.7}) brightness(${.8+a/500})`});
+  $('#simMsg').textContent=d>70?'🥵 Fort stress : les deux ferment leurs stomates, mais la C4 résiste mieux.':T>32?'🔥 Chaud : le blé C3 souffre (photorespiration), le maïs C4 est dans son élément.':T<18?'❄️ Frais : le blé C3 est à l’aise, le maïs C4 démarre mal.':'🙂 Conditions correctes pour les deux.';
+}
+['T','D'].forEach(i=>$('#'+i).oninput=sim);sim();
+
+/* ===== 4. Lumière : couches de feuilles ===== */
+function lum(){
+  const n=+$('#N').value,I=1-Math.pow(.6,n),top=40,bot=top+(n-1)*18+14;   // chaque couche capte 40 % de la lumière restante
+  $('#nV').textContent=n;
+  let rays=[60,130,200,270,340].map(x=>`<line class="flow" x1="${x}" y1="0" x2="${x}" y2="${top-6}" stroke="var(--sun)" stroke-width="4"/>
+   <line class="flow" x1="${x}" y1="${bot}" x2="${x}" y2="192" stroke="var(--sun)" stroke-width="4" opacity="${Math.pow(.6,n)}"/>`).join('');
+  let leaves=Array.from({length:n},(_,i)=>`<ellipse cx="200" cy="${top+i*18+4}" rx="150" ry="9" fill="var(--c3)" opacity=".88" stroke="var(--bg)"/>`).join('');
+  $('#s4').innerHTML=`${rays}${leaves}<rect y="192" width="400" height="28" fill="#8d6e63"/>`;
+  $('#cap').textContent='☀️ '+Math.round(I*100)+' % de la lumière captée';
+  $('#lMsg').textContent=n<=2?'Beaucoup de lumière arrive au sol et est perdue : le couvert est trop clair.':n<=4?'Bon couvert : l’essentiel de la lumière est utilisé.':'Les couches du bas sont à l’ombre : gain minime, risque de verse et de maladies.';
+}
+$('#N').oninput=lum;lum();
+
+/* ===== 5. Transport des sucres ===== */
+$('#s5').innerHTML=`
+<rect y="268" width="400" height="32" fill="#8d6e63"/>
+<g data-k="puits"><path d="M200 270 Q160 285 130 290 M200 270 Q240 285 270 290 M200 270 L200 296" stroke="#c9a27a" stroke-width="6" fill="none" stroke-linecap="round"/><text x="200" y="262" text-anchor="middle" font-size="12" fill="var(--tx)">Racine (puits)</text></g>
+<g data-k="puits"><ellipse cx="330" cy="60" rx="22" ry="34" fill="#e8c36a"/><text x="330" y="115" text-anchor="middle" font-size="12" fill="var(--tx)">Grain / fruit (puits)</text></g>
+<g data-k="phloeme"><path d="M212 110 L212 262" stroke="var(--sug)" stroke-width="9" fill="none" opacity=".55"/><path d="M212 110 Q260 100 310 70" stroke="var(--sug)" stroke-width="7" fill="none" opacity=".55"/></g>
+<g data-k="xyleme"><path d="M188 262 L188 110 Q150 100 110 80" stroke="var(--water)" stroke-width="9" fill="none" opacity=".5"/></g>
+<g data-k="source"><ellipse cx="80" cy="65" rx="70" ry="28" fill="var(--c3)" opacity=".9" transform="rotate(-12 80 65)"/><text x="75" y="35" text-anchor="middle" font-size="12" fill="var(--tx)">Feuille (source)</text><text x="80" y="68" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">sucres produits</text></g>
+<g data-k="xyleme">${dot('H₂O','#2b7fd1','M188 262 L188 110 Q150 100 110 80',4,0)}${dot('H₂O','#2b7fd1','M188 262 L188 110 Q150 100 110 80',4,2)}</g>
+<g data-k="phloeme">${dot('C₆','#e8730c','M130 75 Q190 100 212 120 L212 255',4,0)}${dot('C₆','#e8730c','M130 75 Q190 100 212 120 L212 255',4,1.3)}${dot('C₆','#e8730c','M130 75 Q190 100 212 120 L212 255',4,2.6)}
+${dot('C₆','#e8730c','M130 75 Q190 100 212 110 Q260 100 315 62',4,.6)}${dot('C₆','#e8730c','M130 75 Q190 100 212 110 Q260 100 315 62',4,2.2)}</g>`;
+const Z={source:['🍃 Source : la feuille','Elle fabrique les sucres par photosynthèse. Elle les charge dans le phloème sous forme de <b>saccharose</b>, ce qui fait entrer de l’eau par osmose et monter la pression.'],
+ phloeme:['🟠 Phloème : le flux de sucres','La pression est forte à la source et faible au puits : la sève élaborée s’écoule de l’un à l’autre (<b>hypothèse de Münch</b>). Elle circule dans les deux sens selon les besoins.'],
+ puits:['🌾 Puits : les organes consommateurs','Racines, grains, fruits, bourgeons. Ils déchargent les sucres pour croître ou stocker (amidon). En <b>remplissage du grain</b>, le grain est le puits prioritaire : un stress à ce stade fait chuter le poids de mille grains.'],
+ xyleme:['🔵 Xylème : le retour d’eau','L’eau et les sels minéraux montent des racines aux feuilles (transpiration). Le xylème ramène aussi l’eau libérée dans le phloème au puits.']};
+Object.keys(Z).forEach(k=>{const b=document.createElement('button');b.className='btn';b.textContent=Z[k][0];b.onclick=()=>pick(k);b.dataset.b=k;$('#zBtns').append(b)});
+function pick(k){$$('#s5 [data-k]').forEach(e=>e.classList.toggle('dim',e.dataset.k!==k));$$('#zBtns .btn').forEach(b=>b.classList.toggle('on',b.dataset.b===k));$('#zTxt').innerHTML='<b>'+Z[k][0]+'</b><br>'+Z[k][1]}
+$$('#s5 [data-k]').forEach(e=>e.onclick=()=>pick(e.dataset.k));
+
+/* ===== 6. Quiz ===== */
+const Q=[
+ {q:'Sol superficiel, été chaud et sec : maïs pluvial ou sorgho ?',o:['Maïs, car C4','Sorgho, plus tolérant à la sécheresse','Blé de printemps','Aucun des deux'],a:1,e:'Le maïs est efficient en eau mais très exposé à la floraison. Le sorgho résiste mieux.'},
+ {q:'À quoi sert la gaine de Kranz ?',o:['Stocker l’eau','Concentrer le CO₂ autour de la Rubisco','Capter les UV','Fermer les stomates'],a:1,e:'Le CO₂ pompé par le mésophylle est libéré dans la gaine : plus de photorespiration.'},
+ {q:'Un blé semé tardivement a seulement 1,5 couche de feuilles en avril. Conséquence ?',o:['Verse','Beaucoup de lumière perdue, rendement limité','Photorespiration','Excès d’eau'],a:1,e:'Peu de feuilles = peu de lumière interceptée : on cherche un couvert qui s’installe vite.'},
+ {q:'Dans le phloème, les sucres circulent…',o:['Des racines vers les feuilles uniquement','Des sources vers les puits, selon les besoins','Par transpiration','Grâce à la photolyse'],a:1,e:'Flux de masse source → puits (Münch), dans les deux sens selon les besoins.'},
+ {q:'Après la floraison, un stress hydrique intense fait chuter surtout…',o:['La hauteur de paille','Le remplissage du grain (poids de mille grains)','Le nombre d’épis par pied','La teneur en chlorophylle des racines'],a:1,e:'Moins de photosynthèse et de sucres disponibles pour le puits « grain ».'}];
+let qi=0,sc=0;
+function qShow(){
+  const nx=$('#qNext');
+  if(qi>=Q.length){$('#qN').textContent='Terminé';$('#qQ').textContent='Score : '+sc+' / '+Q.length;$('#qO').innerHTML='';$('#qE').textContent=sc>=4?'🎉 Excellent !':'Reprenez les onglets 1 à 5.';nx.textContent='Recommencer';nx.style.display='';nx.onclick=()=>{qi=0;sc=0;qShow()};return}
+  const q=Q[qi];$('#qN').textContent='Question '+(qi+1)+' / '+Q.length;$('#qQ').textContent=q.q;$('#qE').textContent='';nx.style.display='none';nx.textContent='Suivant →';$('#qO').innerHTML='';
+  q.o.forEach((t,i)=>{const b=document.createElement('button');b.className='btn opt';b.textContent=t;
+    b.onclick=()=>{[...$('#qO').children].forEach((x,j)=>{x.disabled=true;if(j===q.a)x.classList.add('ok')});if(i===q.a)sc++;else b.classList.add('ko');$('#qE').textContent=q.e;nx.style.display='';nx.onclick=()=>{qi++;qShow()}};$('#qO').append(b)});
+}
+/* ===== Rendu plus réaliste : dégradés, molécules, feuilles nervurées, cellules ===== */
+document.body.insertAdjacentHTML('afterbegin',`<svg style="position:absolute;width:0;height:0" aria-hidden="true"><defs>
+<linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ec9f0"/><stop offset="1" stop-color="#e8f5e1"/></linearGradient>
+<linearGradient id="gLeaf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7cc044"/><stop offset="1" stop-color="#2f7d32"/></linearGradient>
+<linearGradient id="gStem" x1="0" x2="1"><stop offset="0" stop-color="#5a9a2f"/><stop offset=".5" stop-color="#a5d16a"/><stop offset="1" stop-color="#4c8a2a"/></linearGradient>
+<linearGradient id="gSoil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a5a43"/><stop offset="1" stop-color="#4a3427"/></linearGradient>
+<linearGradient id="gBeam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe680" stop-opacity=".85"/><stop offset="1" stop-color="#ffe680" stop-opacity=".25"/></linearGradient>
+<radialGradient id="gSun"><stop offset="0" stop-color="#fff7c2"/><stop offset=".45" stop-color="#ffd23f"/><stop offset="1" stop-color="#ffd23f" stop-opacity="0"/></radialGradient>
+<radialGradient id="gCell" cx=".4" cy=".4"><stop offset="0" stop-color="#c3e8a4"/><stop offset="1" stop-color="#6aa84f"/></radialGradient>
+<radialGradient id="gSheath" cx=".4" cy=".4"><stop offset="0" stop-color="#6fb85a"/><stop offset="1" stop-color="#2a6b2e"/></radialGradient>
+<radialGradient id="gGrain" cx=".35" cy=".3"><stop offset="0" stop-color="#f6e08a"/><stop offset="1" stop-color="#c9992e"/></radialGradient>
+<radialGradient id="gGuard" cx=".4" cy=".4"><stop offset="0" stop-color="#a5d67a"/><stop offset="1" stop-color="#4f9a3a"/></radialGradient>
+</defs></svg>`);
+document.head.insertAdjacentHTML('beforeend','<style>.lb{paint-order:stroke;stroke:var(--card);stroke-width:3px;font-size:11px;fill:var(--tx);font-weight:600}.pls{animation:pls 3s ease-in-out infinite}@keyframes pls{50%{opacity:.55}}</style>');
+
+/* Molécules (CO₂, O₂, H₂O, glucose, photon, acide en C4) animées le long d’un chemin */
+const M={
+ co2:'<circle r="5" fill="#4b5563"/><circle cx="-9.5" r="4.5" fill="#e53935"/><circle cx="9.5" r="4.5" fill="#e53935"/>',
+ o2:'<circle cx="-4" r="4.5" fill="#e53935"/><circle cx="4" r="4.5" fill="#e53935"/>',
+ h2o:'<circle r="5.5" fill="#e53935"/><circle cx="-6" cy="5" r="3" fill="#fff" stroke="#99a" stroke-width=".6"/><circle cx="6" cy="5" r="3" fill="#fff" stroke="#99a" stroke-width=".6"/>',
+ glu:'<polygon points="0,-8 7,-4 7,4 0,8 -7,4 -7,-4" fill="#ffb74d" stroke="#e65100" stroke-width="1.2"/><circle r="2" fill="#e65100"/>',
+ ph:'<circle r="8" fill="url(#gSun)"/><circle r="2.5" fill="#fff7c2"/>',
+ mal:'<circle r="6" fill="#ff9800" stroke="#e65100"/><text y="3" font-size="7" text-anchor="middle" fill="#fff" font-weight="700">C4</text>'};
+const mv=(k,path,dur,delay=0)=>`<g>${M[k]}<animateMotion path="${path}" dur="${dur}s" begin="${delay}s" repeatCount="indefinite"/></g>`;
+
+/* Feuille avec nervure centrale et nervures secondaires */
+const leaf=(x,y,s,r)=>`<g transform="translate(${x} ${y}) rotate(${r}) scale(${s})"><path d="M0 0C28 -11 62 -12 92 -2C64 5 28 6 0 0Z" fill="url(#gLeaf)" stroke="#2a6b2e" stroke-width=".7"/><path d="M0 0C28 -4 62 -5 92 -2" stroke="#d6efb0" stroke-width="1.1" fill="none"/><path d="M4 -1C30 -8 62 -9 84 -2.5M4 1C30 -1 62 -2 84 -2" stroke="#9fd06a" stroke-width=".5" fill="none"/></g>`;
+
+/* Cellules avec chloroplastes */
+const chl=(cx,cy,r,n,sd)=>Array.from({length:n},(_,i)=>{const a=i*2.4+sd,d=r*.6*((i*37+sd*11)%10)/10+r*.15;return `<ellipse cx="${(cx+Math.cos(a)*d).toFixed(1)}" cy="${(cy+Math.sin(a)*d).toFixed(1)}" rx="2.3" ry="1.5" fill="#1f6b2b"/>`}).join('');
+const cell=(cx,cy,r,fill,n,sd=0)=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" stroke="#3b7a2a" stroke-width="1"/>${chl(cx,cy,r,n,sd)}<circle cx="${(cx+r*.25).toFixed(1)}" cy="${(cy-r*.2).toFixed(1)}" r="${(r*.2).toFixed(1)}" fill="#8fb36a" opacity=".6"/>`;
+const ring=(cx,cy,R,n,r,fill,nc)=>Array.from({length:n},(_,i)=>{const a=i/n*6.283;return cell(+(cx+Math.cos(a)*R).toFixed(1),+(cy+Math.sin(a)*R*.85).toFixed(1),r,fill,nc,i)}).join('');
+const vein=(x,y)=>`<circle cx="${x}" cy="${y}" r="14" fill="#f3ecc0" stroke="#b9a85a"/><circle cx="${x-5}" cy="${y-2}" r="4" fill="#4aa3df" stroke="#1d6fa8"/><circle cx="${x+3}" cy="${y+4}" r="3.2" fill="#4aa3df" stroke="#1d6fa8"/><circle cx="${x+6}" cy="${y-4}" r="3" fill="#ff9800" stroke="#e65100"/>`;
+
+/* 1. Scène générale */
+$('#s1').innerHTML=`<rect width="400" height="250" rx="12" fill="url(#gSky)"/>
+<circle cx="52" cy="48" r="48" fill="url(#gSun)"/><g class="spin">${[0,45,90,135,180,225,270,315].map(a=>`<path d="M52 18V6" stroke="#ffd23f" stroke-width="4" stroke-linecap="round" transform="rotate(${a} 52 48)"/>`).join('')}</g><circle cx="52" cy="48" r="17" fill="#ffd23f"/>
+<rect y="228" width="400" height="22" fill="url(#gSoil)"/>
+<path d="M200 230C170 240 140 244 110 250M200 230C230 240 260 244 290 250M200 230V250" stroke="#d9bd96" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<path d="M200 234V112" stroke="url(#gStem)" stroke-width="9" stroke-linecap="round"/>
+${leaf(200,150,1.2,-155)}${leaf(200,118,1.7,-18)}
+${mv('ph','M80 58L250 95',2.4,0)}${mv('ph','M85 50L240 88',2.4,1.1)}
+${mv('co2','M392 140L300 98',3,0)}${mv('co2','M392 120L290 92',3,1.5)}
+${mv('o2','M285 78L372 28',3,.8)}
+${mv('h2o','M197 238V122Q205 108 250 100',3.4,0)}${mv('h2o','M197 238V122Q205 108 250 100',3.4,1.7)}
+${mv('glu','M250 100Q212 110 204 126V236',3.4,.6)}${mv('glu','M250 100Q212 110 204 126V236',3.4,2.3)}
+<text class="lb" x="22" y="100">Lumière</text><text class="lb" x="350" y="150">CO₂</text><text class="lb" x="340" y="22">O₂</text><text class="lb" x="160" y="205">Eau</text><text class="lb" x="212" y="205">Sucres</text>`;
+
+/* 2. Stomates : cellules de garde en haricot, chambre sous-stomatique, mésophylle */
+const guard=(s)=>`<path d="M${100-3*s} 22C${100-21*s} 28 ${100-21*s} 52 ${100-3*s} 58C${100-9*s} 48 ${100-9*s} 32 ${100-3*s} 22Z" fill="url(#gGuard)" stroke="#3b7a2a"/><ellipse cx="${100-12*s}" cy="34" rx="2.3" ry="1.5" fill="#1f6b2b"/><ellipse cx="${100-14*s}" cy="42" rx="2.3" ry="1.5" fill="#1f6b2b"/><ellipse cx="${100-12*s}" cy="50" rx="2.3" ry="1.5" fill="#1f6b2b"/>`;
+$('#stoGrid').innerHTML=PL.map((p,i)=>`<div><h2 style="color:${p.c}">${p.n}</h2><svg viewBox="0 0 200 120"><rect width="200" height="120" rx="8" fill="#eaf4dc"/>
+<rect y="14" width="200" height="6" fill="#d8c27a"/>
+<rect x="6" y="20" width="68" height="36" rx="7" fill="#cfe6b0" stroke="#8fb36a"/><rect x="126" y="20" width="68" height="36" rx="7" fill="#cfe6b0" stroke="#8fb36a"/>
+<ellipse cx="100" cy="68" rx="30" ry="12" fill="#f7fcef"/>
+${cell(40,90,13,'url(#gCell)',4,1)}${cell(75,102,12,'url(#gCell)',4,2)}${cell(125,102,12,'url(#gCell)',4,3)}${cell(160,90,13,'url(#gCell)',4,4)}
+<g class="stoma" id="gl${i}">${guard(1)}</g><g class="stoma" id="gr${i}">${guard(-1)}</g>
+<g id="co${i}" opacity="0">${mv('co2','M100 2V78',1.8,0)}</g></svg>
+<p class="note" id="st${i}"></p><span class="note">Efficience en eau</span><div class="bar"><i style="background:${p.c};width:${p.wue}%"></i></div></div>`).join('');
+setDay(1);
+
+/* Kranz : coupes transversales avec faisceau, gaine et mésophylle */
+$('#k3').innerHTML=`<rect width="200" height="150" rx="10" fill="#eaf4dc"/>${ring(100,75,62,10,15,'url(#gCell)',6)}${ring(100,75,31,7,9,'#f1ecc8',0)}${vein(100,75)}
+${mv('co2','M8 10L50 48',2.6,0)}${mv('co2','M192 10L150 48',2.6,1.3)}<text class="lb" font-size="8" x="100" y="146" text-anchor="middle">Rubisco dans tout le mésophylle</text>`;
+$('#k4').innerHTML=`<rect width="200" height="150" rx="10" fill="#eaf4dc"/>${ring(100,75,64,12,11,'url(#gCell)',3)}${ring(100,75,31,8,13,'url(#gSheath)',8)}${vein(100,75)}
+${mv('co2','M8 10L50 42',2,0)}${mv('mal','M52 44L82 62',2,1)}${mv('co2','M192 10L150 42',2,.6)}${mv('mal','M150 44L118 62',2,1.6)}
+<text class="lb" font-size="8" x="100" y="146" text-anchor="middle">Gaine de Kranz : CO₂ concentré</text>`;
+
+/* 4. Couvert : feuilles nervurées empilées et faisceaux lumineux */
+function lum2(){
+  const n=+$('#N').value,I=1-Math.pow(.6,n),top=44,gap=22,bot=top+(n-1)*gap+22;
+  $('#nV').textContent=n;
+  const beams=[40,110,180,250,320].map(x=>`<rect class="pls" x="${x}" y="0" width="34" height="${top-6}" fill="url(#gBeam)"/><g opacity="${Math.pow(.6,n).toFixed(2)}"><rect class="pls" x="${x}" y="${bot}" width="34" height="${190-bot}" fill="url(#gBeam)"/></g>`).join('');
+  let lv='';for(let i=0;i<n;i++)for(let j=0;j<4;j++)lv+=leaf(-5+j*95+(i%2)*45,top+i*gap,1.5,(i%2?-10:10)+(j%2?6:-6));
+  $('#s4').innerHTML=`<rect width="400" height="220" fill="url(#gSky)"/>${beams}<rect y="190" width="400" height="30" fill="url(#gSoil)"/>${lv}`;
+  $('#cap').textContent='☀️ '+Math.round(I*100)+' % de la lumière captée';
+  $('#lMsg').textContent=n<=2?'Beaucoup de lumière arrive au sol et est perdue : le couvert est trop clair.':n<=4?'Bon couvert : l’essentiel de la lumière est utilisé.':'Les couches du bas sont à l’ombre : gain minime, risque de verse et de maladies.';
+}
+$('#N').oninput=lum2;lum2();
+
+/* 5. Plante complète : épi de blé, feuille, tige avec xylème et phloème, racines */
+const ear=Array.from({length:7},(_,i)=>[-1,1].map(s=>`<path d="M${200+s*6} ${24+i*8}l${s*7} -24" stroke="#c9992e" stroke-width=".7"/><ellipse cx="${200+s*6}" cy="${24+i*8}" rx="4.5" ry="7" transform="rotate(${s*18} ${200+s*6} ${24+i*8})" fill="url(#gGrain)" stroke="#a37a1f" stroke-width=".6"/>`).join('')).join('');
+$('#s5').innerHTML=`<rect width="400" height="300" rx="12" fill="url(#gSky)"/><rect y="256" width="400" height="44" fill="url(#gSoil)"/>
+<ellipse cx="60" cy="280" rx="9" ry="5" fill="#8d7a6a"/><ellipse cx="350" cy="276" rx="7" ry="4" fill="#9a8878"/>
+<g data-k="puits"><path d="M200 256V294M200 266C170 270 150 280 118 288M200 270C230 274 255 282 288 290M200 282C186 288 172 294 150 298" stroke="#d9bd96" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M118 288l-9-3M118 288l-8 5M288 290l9-3M288 290l8 5M150 298l-8-2M150 298l-4 6M200 294l-4 5M200 294l5 5" stroke="#e8d3b3" stroke-width="1" stroke-linecap="round"/>
+<text class="lb" x="210" y="252">Racines (puits)</text></g>
+<rect x="195" y="62" width="10" height="196" rx="3" fill="url(#gStem)"/>
+<g data-k="xyleme"><path d="M198 258V112" stroke="#4aa3df" stroke-width="2.4"/><text class="lb" x="188" y="215" text-anchor="end">Xylème</text></g>
+<g data-k="phloeme"><path d="M202 258V70" stroke="#ff9800" stroke-width="2.4"/><text class="lb" x="212" y="215">Phloème</text></g>
+<g data-k="puits">${ear}<text class="lb" x="222" y="46">Épi : grains (puits)</text></g>
+<g data-k="source">${leaf(200,160,1.5,-150)}${leaf(200,190,1.1,-25)}<text class="lb" x="30" y="70">Feuille (source)</text></g>
+<g data-k="xyleme">${mv('h2o','M197 255V135Q190 118 130 121',4,0)}${mv('h2o','M197 255V135Q190 118 130 121',4,2)}</g>
+<g data-k="phloeme">${mv('glu','M130 121Q195 124 203 140V250',4,0)}${mv('glu','M130 121Q195 124 203 140V250',4,1.4)}${mv('glu','M130 121Q195 124 203 128V72',4,.7)}${mv('glu','M130 121Q195 124 203 128V72',4,2.4)}</g>`;
+$$('#s5 [data-k]').forEach(e=>e.onclick=()=>pick(e.dataset.k));
+
+/* ===== Schémas anatomiques fidèles : chloroplaste et coupe de feuille ===== */
+document.head.insertAdjacentHTML('beforeend','<style>.zone.sel{filter:drop-shadow(0 0 3px #fff) brightness(1.12)}</style>');
+M.atp='<circle r="6" fill="#fdd835" stroke="#f9a825"/><text y="2.5" font-size="5.5" text-anchor="middle" font-weight="700" fill="#5d4037">ATP</text>';
+M.nph='<circle r="7" fill="#ab47bc" stroke="#6a1b9a"/><text y="2.3" font-size="4.6" text-anchor="middle" font-weight="700" fill="#fff">NADPH</text>';
+const addCard=(sec,html,first)=>{const c=document.createElement('div');c.className='card';c.innerHTML=html;first?sec.insertBefore(c,sec.firstElementChild):sec.insertBefore(c,sec.children[1]);return c};
+
+/* --- Chloroplaste : enveloppe, grana (thylakoïdes), stroma, cycle de Calvin --- */
+const granum=(cx,cy,n)=>Array.from({length:n},(_,i)=>`<rect x="${cx-24}" y="${cy-n*4.5+i*9}" width="48" height="7" rx="3.5" fill="url(#gSheath)" stroke="#1d5a24" stroke-width=".8"/>`).join('');
+const gpos=[[105,88,5],[200,72,6],[295,88,5],[112,138,4],[288,138,4]];
+addCard(secs[0],`<h2>Dans le chloroplaste</h2>
+<svg viewBox="0 0 400 236" aria-label="Schéma d’un chloroplaste">
+<ellipse cx="200" cy="118" rx="178" ry="92" fill="#4a8f3c"/><ellipse cx="200" cy="118" rx="171" ry="85" fill="#dff0c8" stroke="#2f6b2a" stroke-width="1.5"/>
+<g stroke="#5a9a3c" stroke-width="2" fill="none" opacity=".7"><path d="M105 88L200 72L295 88M105 88L112 138M295 88L288 138M112 138L200 130L288 138"/></g>
+${gpos.map(g=>granum(...g)).join('')}
+<circle cx="200" cy="176" r="22" fill="#fff6d6" stroke="#e8a21a" stroke-width="2" class="flow"/><text x="200" y="179" text-anchor="middle" font-size="9" font-weight="700" fill="#8a5a00">Calvin</text>
+${mv('ph','M10 30L100 72',2.2,0)}${mv('ph','M30 20L110 66',2.2,1)}
+${mv('h2o','M4 140L96 96',3,0.4)}${mv('o2','M205 62L205 8',2.6,.8)}
+${mv('atp','M200 100L192 154',2.2,0)}${mv('nph','M206 100L208 154',2.2,1.1)}
+${mv('co2','M396 190L224 178',3,0)}${mv('glu','M200 198L200 234',2.4,1)}
+<text class="lb" x="8" y="14">Lumière (photons)</text><text class="lb" x="8" y="162">Eau</text><text class="lb" x="214" y="14">O₂</text>
+<text class="lb" x="300" y="118" text-anchor="middle" font-size="9">Granum (thylakoïdes)</text><text class="lb" x="262" y="190">Stroma</text><text class="lb" x="300" y="226">CO₂ →</text><text class="lb" x="208" y="228">Sucre</text></svg>
+<p class="note">Phase claire dans les thylakoïdes (production d’O₂, ATP, NADPH), cycle de Calvin dans le stroma (fixation du CO₂ en sucres).</p>`,false);
+
+/* --- Coupe transversale de feuille, zones cliquables --- */
+const row=(y,h,x0,x1,w,fill,skip)=>{let s='';for(let x=x0;x+w<=x1;x+=w+1)if(!(skip&&x+w>skip[0]&&x<skip[1]))s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${fill}" stroke="#9bbf78" stroke-width=".8"/>`;return s};
+let pal='';for(let x=8;x<390;x+=22)pal+=`<rect x="${x}" y="47" width="20" height="58" rx="9" fill="url(#gCell)" stroke="#3b7a2a" stroke-width=".8"/>${chl(x+10,76,22,6,x)}`;
+let spo='';for(let r=0;r<2;r++)for(let i=0;i<10;i++){const cx=26+i*38+(r?19:0),cy=126+r*26;if(Math.hypot(cx-200,cy-140)>38&&cx<385)spo+=cell(cx,cy,14,'url(#gCell)',3,i+r)}
+const card=addCard(secs[1],`<h2>Coupe d’une feuille : cliquez sur une zone</h2>
+<svg viewBox="0 0 400 214" id="lf" aria-label="Coupe transversale d’une feuille">
+<rect width="400" height="214" rx="10" fill="#f3f9e9"/>
+<g class="zone" data-z="cut"><rect x="6" y="16" width="388" height="5" fill="#d9c36b"/><rect x="6" y="196" width="388" height="5" fill="#d9c36b"/></g>
+<g class="zone" data-z="epi">${row(21,22,8,390,36,'#e6f3d4')}${row(173,23,8,390,36,'#e6f3d4',[284,322])}</g>
+<g class="zone" data-z="pal">${pal}</g>
+<g class="zone" data-z="spo"><ellipse cx="300" cy="166" rx="20" ry="8" fill="#fff"/>${spo}</g>
+<g class="zone" data-z="vein"><circle cx="200" cy="140" r="30" fill="#f1ecc8" stroke="#b9a85a"/>${[[-8,-10],[4,-12],[-16,-4],[12,-3]].map(p=>`<circle cx="${200+p[0]}" cy="${140+p[1]}" r="5" fill="#4aa3df" stroke="#1d6fa8"/>`).join('')}${[[-8,10],[2,13],[10,7]].map(p=>`<circle cx="${200+p[0]}" cy="${140+p[1]}" r="4.5" fill="#ff9800" stroke="#e65100"/>`).join('')}</g>
+<g class="zone" data-z="sto"><g transform="translate(303 184)"><ellipse cx="-8" cy="0" rx="8" ry="11" fill="url(#gGuard)" stroke="#3b7a2a"/><ellipse cx="8" cy="0" rx="8" ry="11" fill="url(#gGuard)" stroke="#3b7a2a"/></g></g>
+<text class="lb" font-size="8" x="10" y="13">Face supérieure (lumière)</text><text class="lb" font-size="8" x="10" y="211">Face inférieure</text></svg>
+<div class="card" id="lfInfo">Cliquez sur la cuticule, l’épiderme, le parenchyme palissadique ou lacuneux, la nervure ou le stomate.</div>`,true);
+const LF={cut:['Cuticule','Couche cireuse imperméable : limite la perte d’eau en dehors des stomates.'],
+ epi:['Épidermes','Cellules jointives et transparentes, presque sans chloroplastes : la lumière les traverse. L’épiderme inférieur porte les stomates.'],
+ pal:['Parenchyme palissadique','Cellules allongées et serrées, très riches en chloroplastes, tournées vers la lumière : principal site de la photosynthèse.'],
+ spo:['Parenchyme lacuneux','Cellules arrondies séparées par des lacunes d’air : diffusion du CO₂ vers les cellules et sortie de la vapeur d’eau.'],
+ vein:['Nervure (faisceau libéro-ligneux)','Xylème (en bleu, côté face supérieure) : eau et sels minéraux. Phloème (en orange, côté inférieur) : export des sucres vers les puits.'],
+ sto:['Stomate','Deux cellules de garde autour d’un pore réglable : entrée du CO₂, sortie de la vapeur d’eau. Plus nombreux sur la face inférieure chez une dicotylédone typique.']};
+$('#lf').addEventListener('click',e=>{const g=e.target.closest('[data-z]');if(!g)return;$$('#lf .zone').forEach(z=>z.classList.remove('sel'));g.classList.add('sel');$('#lfInfo').innerHTML='<b>'+LF[g.dataset.z][0]+'</b><br>'+LF[g.dataset.z][1]});
+
+/* ===== Onglet 1 : scène « principe » refaite (plante entière, flux fléchés lisibles) ===== */
+const fl=(d,c)=>`<path d="${d}" fill="none" stroke="${c}" stroke-width="3.5" stroke-linecap="round" opacity=".5" class="flow"/>`;
+const bl=(d,rib)=>`<path d="${d}" fill="url(#gLeaf)" stroke="#2a6b2e" stroke-width="1"/><path d="${rib}" fill="none" stroke="#d6efb0" stroke-width="1.6" stroke-linecap="round"/>`;
+const PW='M150 238C185 232 196 220 197 205V160C200 135 225 125 255 118';
+const PS='M255 124C222 134 205 146 204 165V238';
+$('#s1').innerHTML=`<rect width="400" height="250" rx="12" fill="url(#gSky)"/>
+<circle cx="52" cy="48" r="50" fill="url(#gSun)"/><g class="spin">${[0,45,90,135,180,225,270,315].map(a=>`<path d="M52 20V8" stroke="#ffd23f" stroke-width="4" stroke-linecap="round" transform="rotate(${a} 52 48)"/>`).join('')}</g><circle cx="52" cy="48" r="17" fill="#ffd23f"/>
+<rect y="206" width="400" height="44" fill="url(#gSoil)"/><ellipse cx="320" cy="224" rx="8" ry="4" fill="#8d7a6a"/><ellipse cx="60" cy="214" rx="6" ry="3" fill="#9a8878"/>
+<g stroke="#d9bd96" fill="none" stroke-linecap="round"><path d="M200 208V246M200 218C170 222 150 232 120 240M200 224C230 228 255 236 285 244M200 234C186 240 172 246 150 250" stroke-width="3"/><path d="M120 240l-9-3M120 240l-8 6M285 244l9-3M285 244l8 6M150 250l-8-2M150 250l-4 6" stroke-width="1"/></g>
+<path d="M200 210C198 170 202 130 200 78" stroke="#4f8f2c" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M198 205C196 170 200 130 198 82" stroke="#a5d16a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+${bl('M199 178C160 142 100 138 45 162C100 156 160 164 199 178Z','M199 176C160 148 100 146 48 161')}
+${bl('M201 150C240 108 305 92 365 118C305 112 245 126 201 150Z','M201 148C245 112 305 100 362 117')}
+${bl('M200 108C205 80 225 55 262 44C238 66 218 84 200 108Z','M200 106C208 82 228 60 259 46')}
+${fl('M85 62C150 80 220 95 290 108','#ffc107')}${fl('M392 150C360 140 330 128 300 118','#6b7280')}${fl('M300 100C330 80 360 60 385 40','#2b7fd1')}${fl(PW,'#2b7fd1')}${fl(PS,'#e8730c')}
+${mv('ph','M85 62C150 80 220 95 290 108',2.4,0)}${mv('ph','M80 70C120 90 160 110 215 128',2.4,1.2)}
+${mv('co2','M392 150C360 140 330 128 300 118',3,0)}${mv('co2','M392 150C360 140 330 128 300 118',3,1.5)}
+${mv('o2','M300 100C330 80 360 60 385 40',3,.8)}
+${mv('h2o',PW,4,0)}${mv('h2o',PW,4,2)}
+${mv('glu',PS,4,.6)}${mv('glu',PS,4,2.6)}
+<text class="lb" x="24" y="118">Lumière</text><text class="lb" x="296" y="172">CO₂ (stomates)</text><text class="lb" x="340" y="34">O₂</text><text class="lb" x="76" y="236">Eau absorbée</text><text class="lb" x="212" y="196">Sucres</text><text class="lb" x="236" y="66">Feuilles</text>`;
+
+qShow();
+</script>
+</body>
+</html>
